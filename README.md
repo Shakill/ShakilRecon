@@ -1,6 +1,6 @@
 # ShakilRecon
 New Tool
-#Permission
+# Permission
 chmod +x subdomain.sh
 #
 chmod 777 subdomain.sh
