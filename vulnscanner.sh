@@ -78,9 +78,9 @@ python3 /root/waymore/waymore.py -i $domain -mode U | sort -u | tee -a /root/rec
 #xnLinkFinder
 python3 /root/xnLinkFinder/xnLinkFinder.py -i $domain -sf $domain | sed -e 's_https*://__' | sed -e 's_www.__' | grep $domain | sort --unique | httpx | tee -a /root/recon/$domain/url/xlinkfinder.txt
 #cat /root/recon/$domain/subdomain/good/final/active_subdomain.txt  | xargs -n 1 -I {} python3 /root/OK-VPS/tools/ParamSpider/paramspider.py --domain {} --level high  | grep -o 'https\?://[^ ]\+' > /root/recon/$domain/url/all_spiderparamters.txt
-paramspider -l /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt -s
-mv /root/recon/output.txt /root/recon/$domain/url/output.txt
-cat /root/recon/results/*.txt > /root/recon/$domain/url/params.txt
+#paramspider -l /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt -s
+#mv /root/recon/output.txt /root/recon/$domain/url/output.txt
+#cat /root/recon/results/*.txt > /root/recon/$domain/url/params.txt
 cp /root/recon/web_archive_urls.sh /root/recon/$domain/url/
 cd /root/recon/$domain/url && ./web_archive_urls.sh /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt 
 cat /root/recon/$domain/url/*.txt | sort --unique | grep $domain | tee /root/recon/$domain/url/sort-url.txt
@@ -203,7 +203,7 @@ Fuzz_Endpoint(){
 for domain in $(cat $host);
 do
 #dirsearch -l /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -w /root/recon/$domain/url/url_endpoints.txt -i 200,301,302 | tee -a /root/recon/$domain/dri/Endpoint_Dir.txt
-ffuf -u https://HFUZZ/WFUZZ -w /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt:HFUZZ -w /root/recon/$domain/url/url_endpoints.txt:WFUZZ -ac -fc 0 -v -mc 200,301,302,401,403  | grep "| URL |" | awk '{print $4}' | sed 's/^http[s]:\/\///g' | sort -u | grep $domain | tee -a /root/recon/$domain/dri/fuffEndpoint_Dir.txt
+ffuf -u https://HFUZZ/WFUZZ -w /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt:HFUZZ -w /root/recon/$domain/url/url_endpoints.txt:WFUZZ -ac -fs 0 -v -mc 200,301,302,401,403  | grep "| URL |" | awk '{print $4}' | sed 's/^http[s]:\/\///g' | sort -u | grep $domain | tee -a /root/recon/$domain/dri/fuffEndpoint_Dir.txt
 #ffuf -u https://HFUZZ/WFUZZ -w active_subdomain.txt:HFUZZ -w /root/wordlist/SecLists/Discovery/Web-Content/raft-large-directories.txt:WFUZZ -mc 200,301,302,401,403
 done
 }
