@@ -191,7 +191,7 @@ for domain in $(cat $host);
 do
 ./cname.sh /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt
 subzy run --targets /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | tee -a /root/recon/$domain/Subdomain-Takeover/subzy_subdomain_takeover.txt
-NtHiM  -f /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -o /root/recon/$domain/Subdomain-Takeover/NtHiM_subdomain_takeover.txt -v
+#NtHiM  -f /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -o /root/recon/$domain/Subdomain-Takeover/NtHiM_subdomain_takeover.txt -v
 nuclei -l /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -t /root/nuclei-templates/http/takeovers/ -c 100 -o /root/recon/$domain/Subdomain-Takeover/nuclei_subdomain_takeover.txt -v
 #nuclei -l /root/recon/$domain/subdomain/good/take_ge_subdomain.txt -t /root/templates/my-nuclei-templates/My-Nuclei-Templates/subdomain-takeover/subdomain-takeover_detect-all-takeovers.yaml -c 100 -o /root/recon/$domain/Subdomain-Takeover/poc.txt -v
 
