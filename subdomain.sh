@@ -108,7 +108,7 @@ for domain in $(cat $host);
 do
 
 httpx -l /root/recon/$domain/subdomain/all_sort_sub.txt -threads 50 -o /root/recon/$domain/subdomain/good/passive_resolving_live_sub_edit.txt
-cat /root/recon/$domain/subdomain/good/passive_resolving_live_sub_edit.txt | sed -e 's_https*://__' | sed -e 's_www.__' | sort -u | tee -a /root/recon/$domain/subdomain/good/passive_resolving_live_sub.txt
+cat /root/recon/$domain/subdomain/good/passive_resolving_live_sub_edit.txt | sed -e 's_https*://__' | sed -e 's_www.__' | sort -u | tee -a /root/recon/$domain/subdomain/good/final/http_domain_for_brut.txt
 rm /root/recon/$domain/subdomain/good/passive_resolving_live_sub_edit.txt
 done
 }
@@ -120,7 +120,7 @@ do
 
 #............................................................................................................
 #If Gotator not to run
-mv /root/recon/$domain/subdomain/good/passive_resolving_live_sub.txt /root/recon/$domain/subdomain/good/final/http_domain_for_brut.txt
+#mv /root/recon/$domain/subdomain/good/passive_resolving_live_sub.txt /root/recon/$domain/subdomain/good/final/http_domain_for_brut.txt
 #..........................................................................................................
 puredns bruteforce /root/wordlist/SecLists/Discovery/DNS/dns-Jhaddix.txt -d /root/recon/$domain/subdomain/good/final/http_domain_for_brut.txt -r /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/purdns_sub.txt
 cat /root/recon/$domain/subdomain/good/final/http_domain_for_brut.txt | dnsgen - | puredns resolve --resolvers /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/dnsgen_purdns_sub.txt
