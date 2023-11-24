@@ -44,7 +44,7 @@ export NETLAS_API_KEY=5ZnQ0iQ9KEIv8tjEtiHxtm6UdCYQjKPS
 export CRIMINALIP_API_KEY=D6K6CAszmXvwCxhruZ40lv0klE5WxsqnvYxrFZFYRXHah5IYPPnmTT3nkKxJ
 export PUBLICWWW_API_KEY=a1cbd16b31a1807330b8e372b7243a47
 export HUNTERHOW_API_KEY=af9ed1d3ab962ffff47cd42e0f870cbd0ec2e1ac5cb5270f08908fae7956a6c5
-export GITHUB_TOKEN=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
+export GITHUB_TOKEN=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
 export CHAOS_KEY=8153077428be89cccb4f3f7e20f45a166c0f5565d9cb118b7c529a5d9ee5bd00
 shodan init pHHlgpFt8Ka3Stb5UlTxcaEwciOeF2QM 
 done
@@ -71,7 +71,7 @@ cat /root/domains_cloud/*.txt | grep $domain | grep -oP "(?<=\[).*(?=\])" | tr '
 #tugarecon
 python3 /root/tugarecon/tugarecon.py -d $domain | awk '{print $3}' |grep -v '@'| grep $domain | sed 's/^\./ /'| sort -u | tee -a /root/recon/$domain/subdomain/tuga.txt
 #cp /root/tugarecon/results/$domain/2023-10-17/subdomains.txt /root/recon/$domain/subdomain/tuga.txt
-github-subdomains -t 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 -d $domain -o /root/recon/$domain/subdomain/github_sub.txt
+github-subdomains -t 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 -d $domain -o /root/recon/$domain/subdomain/github_sub.txt
 #sudomy -d $domain -o /root/recon/$domain/subdomain/sudomy.txt
 #should install v4 amass
 amass enum -d $domain -config /root/config.yaml| awk '{print $1}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/amass_sub_passive.txt
