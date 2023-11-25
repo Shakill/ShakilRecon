@@ -76,7 +76,7 @@ cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | katana -
 #waymore
 python3 /root/waymore/waymore.py -i $domain -mode U | sort -u | tee -a /root/recon/$domain/url/waymore.txt
 #xnLinkFinder
-python3 /root/xnLinkFinder/xnLinkFinder.py -i $domain -sf $domain | sed -e 's_https*://__' | sed -e 's_www.__' | grep $domain | sort --unique | httpx | tee -a /root/recon/$domain/url/xlinkfinder.txt
+python3 /root/xnLinkFinder/xnLinkFinder.py -i $domain -sf $domain -d 2 | sed -e 's_https*://__' | sed -e 's_www.__' | grep $domain | sort --unique | httpx | tee -a /root/recon/$domain/url/xlinkfinder.txt
 #cat /root/recon/$domain/subdomain/good/final/active_subdomain.txt  | xargs -n 1 -I {} python3 /root/OK-VPS/tools/ParamSpider/paramspider.py --domain {} --level high  | grep -o 'https\?://[^ ]\+' > /root/recon/$domain/url/all_spiderparamters.txt
 paramspider -l /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt -s
 cat /root/OK-VPS/tools/paramspider/results/*.txt > /root/OK-VPS/tools/paramspider/results/ParamSpider_all.txt && cp -r /root/OK-VPS/tools/paramspider/results/ParamSpider_all.txt /root/recon/$domain/url 
