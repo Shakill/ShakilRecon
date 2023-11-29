@@ -122,7 +122,7 @@ do
 #If Gotator not to run
 #mv /root/recon/$domain/subdomain/good/passive_resolving_live_sub.txt /root/recon/$domain/subdomain/good/final/http_domain_for_brut.txt
 #..........................................................................................................
-puredns bruteforce /root/wordlist/SecLists/Discovery/DNS/dns-Jhaddix.txt -d /root/recon/$domain/subdomain/good/final/http_domain_for_brut.txt -r /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/purdns_sub.txt
+#puredns bruteforce /root/wordlist/SecLists/Discovery/DNS/dns-Jhaddix.txt -d /root/recon/$domain/subdomain/good/final/http_domain_for_brut.txt -r /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/purdns_sub.txt
 cat /root/recon/$domain/subdomain/good/final/http_domain_for_brut.txt | dnsgen - | puredns resolve --resolvers /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/dnsgen_purdns_sub.txt
 done
 }
@@ -155,6 +155,17 @@ cat /root/recon/$domain/subdomain/good/final/best/sub_brutforche_2_file.txt | dn
 done
 }
 sub_brutforce_2
+
+recursive(){
+for domain in $(cat $host);
+do
+subfinder -all -dL /root/recon/$domain/subdomain/good/final/best/sub_brutforche_2_file.txt -o /root/recon/$domain/subdomain/good/final/best/subfinder_recursive.txt
+amass enum -df /root/recon/$domain/subdomain/good/final/best/sub_brutforche_2_file.txt -config /root/config.yaml| awk '{print $1}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/good/final/best/amass_recursive.txt
+done
+}
+recursive
+
+
 
 httpx_resolve_2(){
 for domain in $(cat $host);
