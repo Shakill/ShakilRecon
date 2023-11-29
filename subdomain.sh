@@ -92,7 +92,7 @@ openssl x509 -noout -text -in <(
 openssl s_client -ign_eof 2>/dev/null <<<$'HEAD / HTTP/1.0\r\n\r' \
 -connect $domain:443 ) ) | grep -Po '((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+' | sed 's/^\./ /' |  tee /root/recon/$domain/subdomain/altnamesub.txt
 shuffledns -d $domain -w $wordlist -r /root/wordlist/resolvers.txt -o /root/recon/$domain/subdomain/shuffledns.txt
-ffuf -u http://HFUZZ -H "Host: FUZZ.HFUZZ" -w /root/recon/input.txt:HFUZZ -w /root/wordlist/SecLists/Discovery/DNS/dns-Jhaddix.txt:FUZZ -fs 0 -v  | grep "| URL |" | awk '{print $4}' | sed 's/^http[s]:\/\///g' | sort -u | grep $domain | tee -a /root/recon/$domain/subdomain/ffuf.txt
+#ffuf -u http://HFUZZ -H "Host: FUZZ.HFUZZ" -w /root/recon/input.txt:HFUZZ -w /root/wordlist/SecLists/Discovery/DNS/dns-Jhaddix.txt:FUZZ -fs 0 -v  | grep "| URL |" | awk '{print $4}' | sed 's/^http[s]:\/\///g' | sort -u | grep $domain | tee -a /root/recon/$domain/subdomain/ffuf.txt
 curl -s "https://api.hackertarget.com/hostsearch/?q=$domain" |  sed 's/,.*//' | sort -u | tee -a /root/recon/$domain/subdomain/hackertarget.txt
 curl -s "https://rapiddns.io/subdomain/$domain?full=1&down=1" | grep $domain | grep -Po '>\K[^<]*' | sed 's/\.$//' | tee -a /root/recon/$domain/subdomain/rapiddns.txt
 anubis -t $domain | grep $domain | tee -a /root/recon/$domain/subdomain/anubis.txt
