@@ -81,7 +81,7 @@ python3 /root/xnLinkFinder/xnLinkFinder.py -i $domain -sf $domain -d 2 -v | sed 
 paramspider -l /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt -s
 #cat /root/OK-VPS/tools/paramspider/results/*.txt > /root/OK-VPS/tools/paramspider/results/ParamSpider_all.txt && cp -r /root/OK-VPS/tools/paramspider/results/ParamSpider_all.txt /root/recon/$domain/url 
 #mv /root/recon/output.txt /root/recon/$domain/url/output.txt
-cat /root/results/*.txt > /root/recon/$domain/url/params.txt
+cat /root/recon/results/*.txt > /root/recon/$domain/url/params.txt
 cp /root/recon/web_archive_urls.sh /root/recon/$domain/url/
 cd /root/recon/$domain/url && ./web_archive_urls.sh /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt 
 cat /root/recon/$domain/url/*.txt | sort --unique | grep $domain | tee /root/recon/$domain/url/sort-url.txt
@@ -100,7 +100,8 @@ for domain in $(cat $host);
 do
 cat /root/recon/$domain/url/final-url.txt | cut -d "/" -f4- >> /root/recon/$domain/url/endpoint/urlcutting_endpoints.txt
 echo $domain | gau | wordlistgen | sort -u | tee -a /root/recon/$domain/url/endpoint/gau_wordlistgen.txt
-mv /root/parameters.txt /root/recon/$domain/url/endpoint/xnlinkfinder.txt
+mv /root/recon/parameters.txt /root/recon/$domain/url/endpoint/xnlinkfinder.txt
+mv /root/recon/output.txt /root/recon/$domain/url/endpoint/endpoint_xnlinkfinder.txt
 cat /root/recon/$domain/url/endpoint/*.txt | sort -u | tee -a /root/recon/$domain/url/endpoint/url_endpoints.txt
 
 #............................
