@@ -202,7 +202,7 @@ cat /root/recon/$domain/url/valid_urls.txt | grep -a -i \=http | bhedak 'http://
 done
 }
 Open_redirect
-
+<<COMMENT
 Fuzz_Endpoint(){
 for domain in $(cat $host);
 do
@@ -212,6 +212,7 @@ ffuf -u https://HFUZZ/WFUZZ -w /root/recon/$domain/subdomain/good/final/best/all
 done
 }
 Fuzz_Endpoint
+
 <<COMMENT
 FUZZ_active(){
 for domain in $(cat $host);
@@ -221,6 +222,7 @@ done
 }
 FUZZ_active
 COMMENT
+<<COMMENT
 ip_sub(){
 for domain in $(cat $host);
 do
@@ -229,7 +231,7 @@ dirsearch -l /root/recon/$domain/subdomain/good/final/subdomain_ip.txt -e php,as
 done
 }
 ip_sub
-
+COMMENT
 Get_js(){
 for domain in $(cat $host);
 do
