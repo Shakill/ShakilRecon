@@ -72,7 +72,25 @@ cat  /root/recon/$domain/Content_Discovery/content_discovery_result.txt | grep 4
 cat  /root/recon/$domain/Content_Discovery/content_discovery_result.txt | grep 405 | awk '{print $2}' >  /root/recon/$domain/Content_Discovery/status_code_405.txt
 echo " "
 echo "${yellow} ---------------------------------- xxxxxxxx ---------------------------------- ${reset}"
+
 echo " "
 echo "${blue} [+] Succesfully saved the results according to their status codes ${reset}"
 echo " "
 echo "${yellow} ---------------------------------- xxxxxxxx ---------------------------------- ${reset}"
+
+for domain in $(cat $host);
+do
+#dirsearch -l /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -w /root/recon/$domain/url/url_endpoints.txt -i 200,301,302 | tee -a /root/recon/$domain/dri/Endpoint_Dir.txt
+ffuf -u https://HFUZZ/WFUZZ -w /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt:HFUZZ -w /root/recon/$domain/url/url_endpoints.txt:WFUZZ -ac -fs 0 -v -mc 200,301,302,401,403  | grep "| URL |" | awk '{print $4}' | sed 's/^http[s]:\/\///g' | sort -u | grep $domain | tee -a /root/recon/$domain/dri/fuffEndpoint_Dir.txt
+#ffuf -u https://HFUZZ/WFUZZ -w active_subdomain.txt:HFUZZ -w /root/wordlist/SecLists/Discovery/Web-Content/raft-large-directories.txt:WFUZZ -mc 200,301,302,401,403
+done
+}
+
+for domain in $(cat $host);
+do
+cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | dnsx -a -resp-only | tee -a /root/recon/$domain/subdomain/good/final/subdomain_ip.txt
+dirsearch -l /root/recon/$domain/subdomain/good/final/subdomain_ip.txt -e php,asp,aspx,jsp,py,txt,conf,config,bak,backup,swp,old,db,sqlasp,asp~,aspx~,py~,rb,rb~,php~,bkp,cgi,cache,csv,html,inc,jar,js,json,jsp~,lock,log,rar,sql,sql.gz,sql.zip,sql.rar,sql.tar.gz,sql~,swp~,tar,tar.bz2,wadl,zip -i 200 –full-url | tee -a /root/recon/$domain/dri/sub_ip_dri_activ.txt
+done
+}
+ip_sub
+
