@@ -96,6 +96,7 @@ shuffledns -d $domain -w $wordlist -r /root/wordlist/resolvers.txt -o /root/reco
 curl -s "https://api.hackertarget.com/hostsearch/?q=$domain" |  sed 's/,.*//' | sort -u | tee -a /root/recon/$domain/subdomain/hackertarget.txt
 curl -s "https://rapiddns.io/subdomain/$domain?full=1&down=1" | grep $domain | grep -Po '>\K[^<]*' | sed 's/\.$//' | tee -a /root/recon/$domain/subdomain/rapiddns.txt
 anubis -t $domain | grep $domain | tee -a /root/recon/$domain/subdomain/anubis.txt
+curl -s "https://subdomainfinder.c99.nl/scans/$(date +"%Y-%m-%d")/$domain" -A "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0)" | grep -Po '.*?//\K.*?(?=/)'  | awk -F "'" '{print $1}' | anew  | grep $domain | tee -a /root/recon/$domain/subdomain/c99_subdomainfinder.txt
 cat /root/recon/$domain/subdomain/*.txt | sort --unique | grep $domain | sed 's/^*.//' | tee -a /root/recon/$domain/subdomain/all_sort_sub.txt
 
 done
