@@ -71,7 +71,7 @@ cat /root/domains_cloud/*.txt | grep $domain | grep -oP "(?<=\[).*(?=\])" | tr '
 #tugarecon
 python3 /root/tugarecon/tugarecon.py -d $domain | awk '{print $3}' |grep -v '@'| grep $domain | sed 's/^\./ /'| sort -u | tee -a /root/recon/$domain/subdomain/tuga.txt
 #cp /root/tugarecon/results/$domain/2023-10-17/subdomains.txt /root/recon/$domain/subdomain/tuga.txt
-github-subdomains -t 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 -d $domain -o /root/recon/$domain/subdomain/github_sub.txt
+#github-subdomains -t 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 -d $domain -o /root/recon/$domain/subdomain/github_sub.txt
 #sudomy -d $domain -o /root/recon/$domain/subdomain/sudomy.txt
 #should install v4 amass
 amass enum -d $domain -config /root/config.yaml| awk '{print $1}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/amass_sub_passive.txt
