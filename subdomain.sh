@@ -150,8 +150,8 @@ wordlist_Making
 sub_brutforce_2(){
 for domain in $(cat $host);
 do
-puredns bruteforce /root/wordlist/my_wordlist.txt -d /root/recon/$domain/subdomain/good/final/best/sub_brutforche_2_file.txt -r /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/best/my_wordlist_purdns_sub.txt
-cat /root/recon/$domain/subdomain/good/final/best/sub_brutforche_2_file.txt | dnsgen - | puredns resolve --resolvers /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/best/dnsgen_purdns_sub_2.txt
+puredns bruteforce /root/wordlist/my_wordlist.txt -d /root/recon/$domain/subdomain/good/final/best/sub_brutforce_2_file.txt -r /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/best/puredns_sub_by_my_wordlist.txt
+cat /root/recon/$domain/subdomain/good/final/best/sub_brutforche_2_file.txt | dnsgen - | puredns resolve --resolvers /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/best/dnsgen_puredns_sub_2.txt
 done
 }
 sub_brutforce_2
@@ -159,10 +159,10 @@ sub_brutforce_2
 recursive(){
 for domain in $(cat $host);
 do
-cat /root/recon/$domain/subdomain/good/final/best/*.txt | sort --unique | httpx | sort --unique | tee -a /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt
+cat /root/recon/$domain/subdomain/good/final/best/*.txt | sort --unique | httpx | sort --unique | tee -a /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion_httpx.txt
+cat /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion_httpx.txt | | sed -e 's_https*://__' | sed -e 's_www.__'| sort --unique | tee -a /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt
 subfinder -all -dL /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt -o /root/recon/$domain/subdomain/good/final/best/subfinder_recursive.txt
 amass enum -df /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt -config /root/config.yaml | awk '{print $1}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/good/final/best/amass_recursive.txt
-rm /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt
 done
 }
 recursive
@@ -172,7 +172,7 @@ recursive
 httpx_resolve_2(){
 for domain in $(cat $host);
 do
-cat /root/recon/$domain/subdomain/good/final/best/*.txt | sort --unique | httpx | sort --unique | tee -a /root/recon/$domain/subdomain/good/final/all_active_sub.txt
+cat /root/recon/$domain/subdomain/good/final/best/*.txt | sort --unique | grep $domain | httpx | sort --unique | tee -a /root/recon/$domain/subdomain/good/final/all_active_sub.txt
 #...........................................
 rm /root/recon/$domain/subdomain/good/final/best/*.txt
 mv /root/recon/$domain/subdomain/good/final/all_active_sub.txt /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt
