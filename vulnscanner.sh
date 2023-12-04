@@ -62,7 +62,7 @@ jaeles scan -c 50 -s /root/templates/jaeles-signatures -U /root/recon/$domain/su
 done
 }
 vuln_scanner
-
+<<COMMENT
 find_urls(){
 for domain in $(cat $host);
 do
@@ -94,6 +94,7 @@ cat /root/recon/$domain/url/final-url.txt | egrep -v "\.woff|\.ttf|\.svg|\.eot|\
 done
 }
 find_urls
+COMMENT
 
 Url_endpoints(){
 for domain in $(cat $host);
