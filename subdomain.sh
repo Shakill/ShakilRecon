@@ -74,7 +74,7 @@ python3 /root/tugarecon/tugarecon.py -d $domain | awk '{print $3}' |grep -v '@'|
 #github-subdomains -t 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 -d $domain -o /root/recon/$domain/subdomain/github_sub.txt
 #sudomy -d $domain -o /root/recon/$domain/subdomain/sudomy.txt
 #should install v4 amass
-amass enum -d $domain -config /root/config.yaml| awk '{print $1}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/amass_sub_passive.txt
+#amass enum -d $domain -config /root/config.yaml| awk '{print $1}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/amass_sub_passive.txt
 export CENSYS_API_ID=303b2554-31b0-4e2d-a036-c869f23bfb76
 export CENSYS_API_SECRET=sB8T2K8en7LW6GHOkKPOfEDVpdmaDj6t
 python3 /root/OK-VPS/tools/censys-subdomain-finder/censys-subdomain-finder.py $domain -o /root/recon/$domain/subdomain/censys_subdomain.txt
