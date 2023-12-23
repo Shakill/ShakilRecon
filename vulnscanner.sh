@@ -241,7 +241,9 @@ cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | getJS --
 cat /root/recon/$domain/js_url/*.txt > /root/recon/$domain/js_url/all_js_url.txt
 cat /root/recon/$domain/js_url/all_js_url.txt | sort --unique | tee /root/recon/$domain/js_url/final_js_url.txt
 cat /root/recon/$domain/js_url/final_js_url.txt | httpx -threads 150 -o /root/recon/$domain/js_url/jshttpxurl.txt
-cat /root/recon/$domain/js_url/jshttpxurl.txt | sort --unique | tee /root/recon/$domain/js_url/good_js_url.txt
+cat /root/recon/$domain/js_url/jshttpxurl.txt | sort --unique | tee /root/recon/$domain/url/good_js_url.txt
+rm /root/recon/$domain/js_url/*.txt
+mv /root/recon/$domain/url/good_js_url.txt /root/recon/$domain/js_url/good_js_url.txt
 /root/OK-VPS/tools/JSScanner/./script.sh /root/recon/$domain/js_url/good_js_url.txt
 nuclei -t /root/nuclei-templates/http/exposures/ -l /root/recon/$domain/js_url/good_js_url.txt -c 50 -o /root/recon/$domain/js_url/exposed_js.txt
 
