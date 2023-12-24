@@ -44,7 +44,7 @@ export NETLAS_API_KEY=5ZnQ0iQ9KEIv8tjEtiHxtm6UdCYQjKPS
 export CRIMINALIP_API_KEY=D6K6CAszmXvwCxhruZ40lv0klE5WxsqnvYxrFZFYRXHah5IYPPnmTT3nkKxJ
 export PUBLICWWW_API_KEY=a1cbd16b31a1807330b8e372b7243a47
 export HUNTERHOW_API_KEY=af9ed1d3ab962ffff47cd42e0f870cbd0ec2e1ac5cb5270f08908fae7956a6c5
-export GITHUB_TOKEN=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
+export GITHUB_TOKEN=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
 export CHAOS_KEY=8153077428be89cccb4f3f7e20f45a166c0f5565d9cb118b7c529a5d9ee5bd00
 shodan init pHHlgpFt8Ka3Stb5UlTxcaEwciOeF2QM 
 done
@@ -62,7 +62,7 @@ mkdir -p /root/recon/$domain/subdomain /root/recon/$domain/subdomain/good /root/
 
 subfinder -all -d $domain -o /root/recon/$domain/subdomain/subfinder.txt
 assetfinder -subs-only $domain | tee /root/recon/$domain/subdomain/assetfinder.txt 
-echo  $domain | haktrails subdomains | sed -e 's_https*://__' | sed -e 's_www.__' | tee -a /root/recon/$domain/subdomain/haktrails.txt
+#echo  $domain | haktrails subdomains | sed -e 's_https*://__' | sed -e 's_www.__' | tee -a /root/recon/$domain/subdomain/haktrails.txt
 findomain -t $domain | tee /root/recon/$domain/subdomain/findomain.txt
 #https://kaeferjaeger.gay/?dir=sni-ip-ranges
 cat /root/domains_cloud/*.txt | grep $domain | grep -oP "(?<=\[).*(?=\])" | tr ' ' '\n' | sed 's/^*.//' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/domains_cloud.txt
@@ -71,13 +71,13 @@ cat /root/domains_cloud/*.txt | grep $domain | grep -oP "(?<=\[).*(?=\])" | tr '
 #tugarecon
 python3 /root/tugarecon/tugarecon.py -d $domain | awk '{print $3}' |grep -v '@'| grep $domain | sed 's/^\./ /'| sort -u | tee -a /root/recon/$domain/subdomain/tuga.txt
 #cp /root/tugarecon/results/$domain/2023-10-17/subdomains.txt /root/recon/$domain/subdomain/tuga.txt
-#github-subdomains -t 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 -d $domain -o /root/recon/$domain/subdomain/github_sub.txt
+github-subdomains -t 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 -d $domain -o /root/recon/$domain/subdomain/github_sub.txt
 #sudomy -d $domain -o /root/recon/$domain/subdomain/sudomy.txt
 #should install v4 amass
 #amass enum -d $domain -config /root/config.yaml| awk '{print $1}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/amass_sub_passive.txt
-export CENSYS_API_ID=303b2554-31b0-4e2d-a036-c869f23bfb76
-export CENSYS_API_SECRET=sB8T2K8en7LW6GHOkKPOfEDVpdmaDj6t
-python3 /root/OK-VPS/tools/censys-subdomain-finder/censys-subdomain-finder.py $domain -o /root/recon/$domain/subdomain/censys_subdomain.txt
+#export CENSYS_API_ID=303b2554-31b0-4e2d-a036-c869f23bfb76
+#export CENSYS_API_SECRET=sB8T2K8en7LW6GHOkKPOfEDVpdmaDj6t
+#python3 /root/OK-VPS/tools/censys-subdomain-finder/censys-subdomain-finder.py $domain -o /root/recon/$domain/subdomain/censys_subdomain.txt
 export CHAOS_KEY=8153077428be89cccb4f3f7e20f45a166c0f5565d9cb118b7c529a5d9ee5bd00
 chaos -d $domain -o /root/recon/$domain/subdomain/chaos_sub.txt
 cero $domain | sed 's/^*.//' | grep -e "\." | sort -u | tee -a /root/recon/$domain/subdomain/cero_ssl_sub.txt
