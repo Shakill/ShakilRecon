@@ -56,7 +56,7 @@ for domain in $(cat $host);
 do
 mkdir -p /root/recon/$domain/subdomain /root/recon/$domain/subdomain/good /root/recon/$domain/subdomain/good/final /root/recon/$domain/subdomain/good/final/best /root/recon/$domain/Subdomain-Takeover /root/recon/$domain/Subdomain-Screenshots /root/recon/$domain/Special_subdomain /root/recon/$domain/Special_subdomain/scan /root/recon/$domain/scan  /root/recon/$domain/scan/my-jaeles /root/recon/$domain/scan/jaeles /root/recon/$domain/scan/jaeles/my-url /root/recon/$domain/scan/jaeles/url /root/recon/$domain/dri  /root/recon/$domain/scan/nuclei/Php-My-Admin /root/recon/$domain/scan/nuclei /root/recon/$domain/scan/new-nuclei /root/recon/$domain/url /root/recon/$domain/url/endpoint /root/recon/$domain/Secret-api /root/recon/$domain/gf /root/recon/$domain/xss /root/recon/$domain/sql /root/recon/$domain/js_url /root/recon/$domain/git_dork /root/recon/$domain/SQL
 
-nuclei -l /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -t /root/custom-nuclei-templates/ -c 50 -o /root/recon/$domain/scan/new-nuclei/All.txt -v
+nuclei -l /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -t /root/nuclei-templates/ -c 50 -o /root/recon/$domain/scan/new-nuclei/All.txt -v
 jaeles scan -c 50 -s /root/templates/ghsec-jaeles-signatures -U /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -o /root/recon/$domain/scan/my-jaeles/ -v
 jaeles scan -c 50 -s /root/templates/jaeles-signatures -U /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -o /root/recon/$domain/scan/jaeles/ -v
 done
@@ -156,7 +156,7 @@ for domain in $(cat $host);
 do
 
 cat /root/recon/$domain/url/valid_urls.txt | grep ".php" | sed 's/\.php.*/.php\//' | sort -u | sed 's/$/%27%22%60/' | while read url do ; do curl --silent "$url" | grep -qs "You have an error in your SQL syntax" && echo -e "$url \e[1;32mVulnerable\e[0m" || echo -e "$url \e[1;31mNot Vulnerable\e[0m" ;done | tee -a /root/recon/$domain/sql/curl_SQL_ERROR.txt
-sqlmap -m /root/recon/$domain/url/valid_urls.txt --level 5 --batch --risk 3  --random-agent | tee -a /root/recon/$domain/sql/sqlmap_sql_url.txt
+#sqlmap -m /root/recon/$domain/url/valid_urls.txt --level 5 --batch --risk 3  --random-agent | tee -a /root/recon/$domain/sql/sqlmap_sql_url.txt
 ghauri -r /root/recon/$domain/url/valid_urls.txt --level=3 --banner --dbs | tee -a /root/recon/$domain/sql/ghauri_sql_url.txt
 python3 /root/HBSQLI/hbsqli.py -l /root/recon/$domain/url/valid_urls.txt -p /root/HBSQLI/payloads.txt -H /root/HBSQLI/headers.txt -v | tee -a /root/recon/$domain/sql/hbsqli_url.txt
 done
