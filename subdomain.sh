@@ -262,10 +262,10 @@ python3 /root/waymore/waymore.py -i $domain -mode U | sort -u | tee -a /root/rec
 #xnLinkFinder
 python3 /root/xnLinkFinder/xnLinkFinder.py -i $domain -sf $domain -d 2 -v | sed -e 's_https*://__' | sed -e 's_www.__' | grep $domain | sort --unique | httpx | tee -a /root/recon/$domain/url/xlinkfinder.txt
 #cat /root/recon/$domain/subdomain/good/final/active_subdomain.txt  | xargs -n 1 -I {} python3 /root/OK-VPS/tools/ParamSpider/paramspider.py --domain {} --level high  | grep -o 'https\?://[^ ]\+' > /root/recon/$domain/url/all_spiderparamters.txt
-paramspider -l /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt -s
+#paramspider -l /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt -s
 #cat /root/OK-VPS/tools/paramspider/results/*.txt > /root/OK-VPS/tools/paramspider/results/ParamSpider_all.txt && cp -r /root/OK-VPS/tools/paramspider/results/ParamSpider_all.txt /root/recon/$domain/url 
 #mv /root/recon/output.txt /root/recon/$domain/url/output.txt
-cat /root/recon/results/*.txt > /root/recon/$domain/url/params.txt
+#cat /root/recon/results/*.txt > /root/recon/$domain/url/params.txt
 cp /root/recon/web_archive_urls.sh /root/recon/$domain/url/
 cd /root/recon/$domain/url && ./web_archive_urls.sh /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt
 curl -s "https://otx.alienvault.com/api/v1/indicators/domain/$domain/url_list?limit=100&page=1" | grep -o '"url": *"[^"]*"' | grep -o '"[^"]*"$' | tr -d '"' | tee -a /root/recon/$domain/url/alienvault.txt
@@ -274,7 +274,7 @@ httpx -l /root/recon/$domain/url/sort-url.txt -o /root/recon/$domain/url/url_htt
 arjun -i /root/recon/$domain/url/url_httpx.txt -t 20 -oT /root/recon/$domain/url/arjun.txt
 cat /root/recon/$domain/url/*.txt | tee -a /root/recon/$domain/url/2all-url.txt
 cat /root/recon/$domain/url/2all-url.txt | sort --unique | tee /root/recon/$domain/url/final-url.txt
-cat /root/recon/$domain/url/final-url.txt | egrep -v "\.woff|\.ttf|\.svg|\.eot|\.png|\.jpep|\.svg|\.css|\.ico" | sed 's/:88//9;s/:443//g' | sort -u | tee -a /root/recon/$domain/url/valid_urls.txt
+cat /root/recon/$domain/url/final-url.txt | egrep -v "\.woff|\.ttf|\.svg|\.eot|\.png|\.jpep|\.svg|\.css|\.ico" | sed 's/:88//9;s/:443//g'| grep -v '@'| grep $domain | sort -u | tee -a /root/recon/$domain/url/valid_urls.txt
 
 done
 }
