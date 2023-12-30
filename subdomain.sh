@@ -273,8 +273,8 @@ cat /root/recon/$domain/url/*.txt | sort --unique | grep $domain | tee /root/rec
 httpx -l /root/recon/$domain/url/sort-url.txt -o /root/recon/$domain/url/url_httpx.txt
 arjun -i /root/recon/$domain/url/url_httpx.txt -t 20 -oT /root/recon/$domain/url/arjun.txt
 cat /root/recon/$domain/url/*.txt | tee -a /root/recon/$domain/url/2all-url.txt
-cat /root/recon/$domain/url/2all-url.txt | sort --unique | tee /root/recon/$domain/url/final-url.txt
-cat /root/recon/$domain/url/final-url.txt | egrep -v "\.woff|\.ttf|\.svg|\.eot|\.png|\.jpep|\.svg|\.css|\.ico" | sed 's/:88//9;s/:443//g'| grep -v '@'| grep $domain | sort -u | tee -a /root/recon/$domain/url/valid_urls.txt
+cat /root/recon/$domain/url/2all-url.txt | httpx | sort --unique | tee /root/recon/$domain/url/final-url.txt
+cat /root/recon/$domain/url/final-url.txt | egrep -v "\.woff|\.ttf|\.svg|\.eot|\.png|\.jpep|\.svg|\.css" | sed 's/:88//9;s/:443//g'| grep -v '@'| grep $domain | sort -u | tee -a /root/recon/$domain/url/valid_urls.txt
 
 done
 }
