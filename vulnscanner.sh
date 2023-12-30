@@ -58,7 +58,9 @@ mkdir -p /root/recon/$domain/subdomain /root/recon/$domain/subdomain/good /root/
 
 nuclei -l /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -t /root/nuclei-templates/ -c 50 -o /root/recon/$domain/scan/new-nuclei/All.txt -v
 jaeles scan -c 50 -s /root/templates/ghsec-jaeles-signatures -U /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -o /root/recon/$domain/scan/my-jaeles/ -v
+nuclei -l /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -t /root/my-templates/Templates/cves/ -c 50 -o /root/recon/$domain/scan/new-nuclei/cves.txt -v
 jaeles scan -c 50 -s /root/templates/jaeles-signatures -U /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -o /root/recon/$domain/scan/jaeles/ -v
+nuclei -l /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -t /root/my-templates/Templates/Vulnerability-Templates/ -c 50 -o /root/recon/$domain/scan/new-nuclei/Vuln_templates.txt -v
 done
 }
 vuln_scanner
@@ -121,12 +123,12 @@ gf_patterns(){
 for domain in $(cat $host);
 do
 gf xss /root/recon/$domain/url/valid_urls.txt | tee /root/recon/$domain/gf/xss.txt
-#gf my-lfi /root/recon/$domain/url/valid_urls.txt | tee /root/recon/$domain/gf/my-lfi.txt
+gf my-lfi /root/recon/$domain/url/valid_urls.txt | tee /root/recon/$domain/gf/my-lfi.txt
 gf sqli /root/recon/$domain/url/valid_urls.txt | tee /root/recon/$domain/gf/sqli.txt
 gf lfi /root/recon/$domain/url/valid_urls.txt |  tee /root/recon/$domain/gf/lfi.txt
 gf redirect /root/recon/$domain/url/valid_urls.txt |  tee /root/recon/$domain/gf/my-Redirect.txt
 gf aws-keys /root/recon/$domain/url/valid_urls.txt |  tee /root/recon/$domain/gf/aws-keys-json.txt
-gf interestingsubs /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt |  tee /root/recon/$domain/gf/interestingsubs.txt
+#gf interestingsubs /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt |  tee /root/recon/$domain/gf/interestingsubs.txt
 gf s3-buckets /root/recon/$domain/url/valid_urls.txt |  tee /root/recon/$domain/gf/s3-buckets.txt
 gf servers /root/recon/$domain/url/valid_urls.txt |  tee /root/recon/$domain/gf/servers.txt
 gf debug-pages /root/recon/$domain/url/valid_urls.txt |  tee /root/recon/$domain/gf/debug-pages.txt
