@@ -61,27 +61,29 @@ mkdir -p /root/recon/$domain/subdomain /root/recon/$domain/subdomain/good /root/
 #uncover -q $domain -e shodan,censys,fofa,quake,zoomeye,netlas,criminalip,hunterhow,hunter,shodan-idb | httpx | tee /root/recon/$domain/subdomain/good/uncover_ips.txt
 
 subfinder -all -d $domain -o /root/recon/$domain/subdomain/subfinder.txt
+cat /root/domains_cloud/*.txt | grep $domain | grep -oP "(?<=\[).*(?=\])" | tr ' ' '\n' | sed 's/^*.//' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/domains_cloud.txt
+github-subdomains -t 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 -d $domain -o /root/recon/$domain/subdomain/github_sub.txt
+#Install v3.23.3 amass
+amass enum -passive -norecursive -noalts -d $domain -o /root/recon/$domain/subdomain/amass_sub_passive.txt
 #subfinder -d $domain -v -t 25 -o /root/recon/$domain/subdomain/subfinder.txt
 #assetfinder -subs-only $domain | tee /root/recon/$domain/subdomain/assetfinder.txt 
 #echo  $domain | haktrails subdomains | sed -e 's_https*://__' | sed -e 's_www.__' | tee -a /root/recon/$domain/subdomain/haktrails.txt
 #findomain -t $domain | tee /root/recon/$domain/subdomain/findomain.txt
 #https://kaeferjaeger.gay/?dir=sni-ip-ranges
-cat /root/domains_cloud/*.txt | grep $domain | grep -oP "(?<=\[).*(?=\])" | tr ' ' '\n' | sed 's/^*.//' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/domains_cloud.txt
 #bbot -t $domain -f subdomain-enum
 #cp /root/.bbot/scans/insolent_jerry/subdomains.txt /root/recon/$domain/subdomain/bbot.txt
 #tugarecon
 #python3 /root/tugarecon/tugarecon.py -d $domain | awk '{print $3}' |grep -v '@'| grep $domain | sed 's/^\./ /'| sort -u | tee -a /root/recon/$domain/subdomain/tuga.txt
 #cp /root/tugarecon/results/$domain/2023-10-17/subdomains.txt /root/recon/$domain/subdomain/tuga.txt
-github-subdomains -t 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 -d $domain -o /root/recon/$domain/subdomain/github_sub.txt
+
 #sudomy -d $domain -o /root/recon/$domain/subdomain/sudomy.txt
 #should install v4 amass
 #amass enum -d $domain -config /root/config.yaml| awk '{print $1}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/amass_sub_passive.txt
-#Install v3.23.3 amass
-amass enum -passive -norecursive -noalts -d $domain -o /root/recon/$domain/subdomain/amass_sub_passive.txt
+
 #export CENSYS_API_ID=303b2554-31b0-4e2d-a036-c869f23bfb76
 #export CENSYS_API_SECRET=sB8T2K8en7LW6GHOkKPOfEDVpdmaDj6t
 #python3 /root/OK-VPS/tools/censys-subdomain-finder/censys-subdomain-finder.py $domain -o /root/recon/$domain/subdomain/censys_subdomain.txt
-export CHAOS_KEY=8153077428be89cccb4f3f7e20f45a166c0f5565d9cb118b7c529a5d9ee5bd00
+#export CHAOS_KEY=8153077428be89cccb4f3f7e20f45a166c0f5565d9cb118b7c529a5d9ee5bd00
 #chaos -d $domain -o /root/recon/$domain/subdomain/chaos_sub.txt
 #cero $domain | sed 's/^*.//' | grep -e "\." | sort -u | tee -a /root/recon/$domain/subdomain/cero_ssl_sub.txt
 #gau --subs $domain --threads 5 |  unfurl -u domains | grep $domain | sort -u -o /root/recon/$domain/subdomain/gau_subdomain.txt
@@ -100,6 +102,7 @@ openssl s_client -ign_eof 2>/dev/null <<<$'HEAD / HTTP/1.0\r\n\r' \
 #curl -s "https://rapiddns.io/subdomain/$domain?full=1&down=1" | grep $domain | grep -Po '>\K[^<]*' | sed 's/\.$//' | tee -a /root/recon/$domain/subdomain/rapiddns.txt
 #anubis -t $domain | grep $domain | tee -a /root/recon/$domain/subdomain/anubis.txt
 #curl -s "https://subdomainfinder.c99.nl/scans/$(date +"%Y-%m-%d")/$domain" -A "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0)" | grep -Po '.*?//\K.*?(?=/)'  | awk -F "'" '{print $1}' | anew  | grep $domain | tee -a /root/recon/$domain/subdomain/c99_subdomainfinder.txt
+
 cat /root/recon/$domain/subdomain/*.txt | sort --unique | grep $domain | sed 's/^*.//' | tee -a /root/recon/$domain/subdomain/all_sort_sub.txt
 
 done
@@ -117,6 +120,7 @@ rm /root/recon/$domain/subdomain/good/passive_resolving_live_sub_edit.txt
 done
 }
 resolving_domains
+
 <<COMMENT
 sub_brutforce(){
 for domain in $(cat $host);
@@ -131,6 +135,7 @@ cat /root/recon/$domain/subdomain/good/final/http_domain_for_brut.txt | dnsgen -
 done
 }
 sub_brutforce
+
 COMMENT
 
 
@@ -187,7 +192,7 @@ rm /root/recon/$domain/subdomain/good/final/all_active_sub.txt
 done
 }
 httpx_resolve_2
-COMMENT
+
 
 interesting_subs(){
 for domain in $(cat $host);
