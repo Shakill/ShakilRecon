@@ -92,10 +92,10 @@ amass enum -passive -norecursive -noalts -d $domain -o /root/recon/$domain/subdo
 #curl -s "https://crt.sh/?q=%25.$domain&output=json" | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u | tee /root/recon/$domain/subdomain/crtsub.txt
 #curl -s "https://jldc.me/anubis/subdomains/$domain" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u | tee /root/recon/$domain/subdomain/jldcsub.txt
 #sed -ne 's/^\( *\)Subject:/\1/p;/X509v3 Subject Alternative Name/{
-N;s/^.*\n//;:a;s/^\( *\)\(.*\), /\1\2\n\1/;ta;p;q; }' < <(
-openssl x509 -noout -text -in <(
-openssl s_client -ign_eof 2>/dev/null <<<$'HEAD / HTTP/1.0\r\n\r' \
--connect $domain:443 ) ) | grep -Po '((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+' | sed 's/^\./ /' |  tee /root/recon/$domain/subdomain/altnamesub.txt
+#N;s/^.*\n//;:a;s/^\( *\)\(.*\), /\1\2\n\1/;ta;p;q; }' < <(
+#openssl x509 -noout -text -in <(
+#openssl s_client -ign_eof 2>/dev/null <<<$'HEAD / HTTP/1.0\r\n\r' \
+#-connect $domain:443 ) ) | grep -Po '((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+' | sed 's/^\./ /' |  tee /root/recon/$domain/subdomain/altnamesub.txt
 ##shuffledns -d $domain -w $wordlist -r /root/wordlist/resolvers.txt -o /root/recon/$domain/subdomain/shuffledns.txt
 ##ffuf -u http://HFUZZ -H "Host: FUZZ.HFUZZ" -w /root/recon/input.txt:HFUZZ -w /root/wordlist/SecLists/Discovery/DNS/dns-Jhaddix.txt:FUZZ -fs 0 -v  | grep "| URL |" | awk '{print $4}' | sed 's/^http[s]:\/\///g' | sort -u | grep $domain | tee -a /root/recon/$domain/subdomain/ffuf.txt
 #curl -s "https://api.hackertarget.com/hostsearch/?q=$domain" |  sed 's/,.*//' | sort -u | tee -a /root/recon/$domain/subdomain/hackertarget.txt
@@ -108,7 +108,6 @@ cat /root/recon/$domain/subdomain/*.txt | sort --unique | grep $domain | sed 's/
 done
 }
 domain_enum
-
 
 resolving_domains(){
 for domain in $(cat $host);
