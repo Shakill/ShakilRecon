@@ -174,6 +174,7 @@ cat /root/recon/$domain/subdomain/good/final/best/*.txt | sort --unique | httpx 
 cat /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion_httpx.txt | sed -e 's_https*://__' | sed -e 's_www.__'| sort --unique | tee -a /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt
 subfinder -all -dL /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt -o /root/recon/$domain/subdomain/good/final/best/subfinder_recursive.txt
 #amass enum -df /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt -config /root/config.yaml | awk '{print $1}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/good/final/best/amass_recursive.txt
+amass enum -passive -norecursive -noalts -df /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt -o /root/recon/$domain/subdomain/good/final/best/amass_recursive.txt
 done
 }
 recursive
