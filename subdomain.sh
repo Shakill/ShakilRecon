@@ -44,7 +44,7 @@ export NETLAS_API_KEY=5ZnQ0iQ9KEIv8tjEtiHxtm6UdCYQjKPS
 export CRIMINALIP_API_KEY=D6K6CAszmXvwCxhruZ40lv0klE5WxsqnvYxrFZFYRXHah5IYPPnmTT3nkKxJ
 export PUBLICWWW_API_KEY=a1cbd16b31a1807330b8e372b7243a47
 export HUNTERHOW_API_KEY=af9ed1d3ab962ffff47cd42e0f870cbd0ec2e1ac5cb5270f08908fae7956a6c5
-export GITHUB_TOKEN=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
+export GITHUB_TOKEN=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
 export CHAOS_KEY=8153077428be89cccb4f3f7e20f45a166c0f5565d9cb118b7c529a5d9ee5bd00
 shodan init pHHlgpFt8Ka3Stb5UlTxcaEwciOeF2QM 
 done
@@ -61,42 +61,45 @@ mkdir -p /root/recon/$domain/subdomain /root/recon/$domain/subdomain/good /root/
 #uncover -q $domain -e shodan,censys,fofa,quake,zoomeye,netlas,criminalip,hunterhow,hunter,shodan-idb | httpx | tee /root/recon/$domain/subdomain/good/uncover_ips.txt
 
 subfinder -all -d $domain -o /root/recon/$domain/subdomain/subfinder.txt
-assetfinder -subs-only $domain | tee /root/recon/$domain/subdomain/assetfinder.txt 
+#subfinder -d $domain -v -t 25 -o /root/recon/$domain/subdomain/subfinder.txt
+#assetfinder -subs-only $domain | tee /root/recon/$domain/subdomain/assetfinder.txt 
 #echo  $domain | haktrails subdomains | sed -e 's_https*://__' | sed -e 's_www.__' | tee -a /root/recon/$domain/subdomain/haktrails.txt
-findomain -t $domain | tee /root/recon/$domain/subdomain/findomain.txt
+#findomain -t $domain | tee /root/recon/$domain/subdomain/findomain.txt
 #https://kaeferjaeger.gay/?dir=sni-ip-ranges
 cat /root/domains_cloud/*.txt | grep $domain | grep -oP "(?<=\[).*(?=\])" | tr ' ' '\n' | sed 's/^*.//' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/domains_cloud.txt
 #bbot -t $domain -f subdomain-enum
 #cp /root/.bbot/scans/insolent_jerry/subdomains.txt /root/recon/$domain/subdomain/bbot.txt
 #tugarecon
-python3 /root/tugarecon/tugarecon.py -d $domain | awk '{print $3}' |grep -v '@'| grep $domain | sed 's/^\./ /'| sort -u | tee -a /root/recon/$domain/subdomain/tuga.txt
+#python3 /root/tugarecon/tugarecon.py -d $domain | awk '{print $3}' |grep -v '@'| grep $domain | sed 's/^\./ /'| sort -u | tee -a /root/recon/$domain/subdomain/tuga.txt
 #cp /root/tugarecon/results/$domain/2023-10-17/subdomains.txt /root/recon/$domain/subdomain/tuga.txt
-#github-subdomains -t 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 -d $domain -o /root/recon/$domain/subdomain/github_sub.txt
+github-subdomains -t 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 -d $domain -o /root/recon/$domain/subdomain/github_sub.txt
 #sudomy -d $domain -o /root/recon/$domain/subdomain/sudomy.txt
 #should install v4 amass
 #amass enum -d $domain -config /root/config.yaml| awk '{print $1}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/amass_sub_passive.txt
+#Install v3.23.3 amass
+amass enum -passive -norecursive -noalts -d $domain -o /root/recon/$domain/subdomain/amass_sub_passive.txt
 #export CENSYS_API_ID=303b2554-31b0-4e2d-a036-c869f23bfb76
 #export CENSYS_API_SECRET=sB8T2K8en7LW6GHOkKPOfEDVpdmaDj6t
 #python3 /root/OK-VPS/tools/censys-subdomain-finder/censys-subdomain-finder.py $domain -o /root/recon/$domain/subdomain/censys_subdomain.txt
 export CHAOS_KEY=8153077428be89cccb4f3f7e20f45a166c0f5565d9cb118b7c529a5d9ee5bd00
-chaos -d $domain -o /root/recon/$domain/subdomain/chaos_sub.txt
-cero $domain | sed 's/^*.//' | grep -e "\." | sort -u | tee -a /root/recon/$domain/subdomain/cero_ssl_sub.txt
-gau --subs $domain --threads 5 |  unfurl -u domains | grep $domain | sort -u -o /root/recon/$domain/subdomain/gau_subdomain.txt
-waybackurls $domain |  unfurl -u domains | sort -u -o /root/recon/$domain/subdomain/waybackurl_subdomain.txt
-curl --insecure --silent "http://web.archive.org/cdx/search/cdx?url=*.$domain/*&output=text&fl=original&collapse=urlkey" | sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sed "/@/d" | sed -e 's/\.$//' | sort -u | tee /root/recon/$domain/subdomain/web.archive.txt
-curl -s "https://crt.sh/?q=%25.$domain&output=json" | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u | tee /root/recon/$domain/subdomain/crtsub.txt
-curl -s "https://jldc.me/anubis/subdomains/$domain" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u | tee /root/recon/$domain/subdomain/jldcsub.txt
-sed -ne 's/^\( *\)Subject:/\1/p;/X509v3 Subject Alternative Name/{
+#chaos -d $domain -o /root/recon/$domain/subdomain/chaos_sub.txt
+#cero $domain | sed 's/^*.//' | grep -e "\." | sort -u | tee -a /root/recon/$domain/subdomain/cero_ssl_sub.txt
+#gau --subs $domain --threads 5 |  unfurl -u domains | grep $domain | sort -u -o /root/recon/$domain/subdomain/gau_subdomain.txt
+#waybackurls $domain |  unfurl -u domains | sort -u -o /root/recon/$domain/subdomain/waybackurl_subdomain.txt
+#curl --insecure --silent "http://web.archive.org/cdx/search/cdx?url=*.$domain/*&output=text&fl=original&collapse=urlkey" | sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sed "/@/d" | sed -e 's/\.$//' | sort -u | tee /root/recon/$domain/subdomain/web.archive.txt
+#curl -s "https://crt.sh/?q=%25.$domain&output=json" | jq -r '.[].name_value' | sed 's/\*\.//g' | sort -u | tee /root/recon/$domain/subdomain/crtsub.txt
+#curl -s "https://jldc.me/anubis/subdomains/$domain" | grep -Po "((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+" | sort -u | tee /root/recon/$domain/subdomain/jldcsub.txt
+#sed -ne 's/^\( *\)Subject:/\1/p;/X509v3 Subject Alternative Name/{
 N;s/^.*\n//;:a;s/^\( *\)\(.*\), /\1\2\n\1/;ta;p;q; }' < <(
 openssl x509 -noout -text -in <(
 openssl s_client -ign_eof 2>/dev/null <<<$'HEAD / HTTP/1.0\r\n\r' \
 -connect $domain:443 ) ) | grep -Po '((http|https):\/\/)?(([\w.-]*)\.([\w]*)\.([A-z]))\w+' | sed 's/^\./ /' |  tee /root/recon/$domain/subdomain/altnamesub.txt
-#shuffledns -d $domain -w $wordlist -r /root/wordlist/resolvers.txt -o /root/recon/$domain/subdomain/shuffledns.txt
-#ffuf -u http://HFUZZ -H "Host: FUZZ.HFUZZ" -w /root/recon/input.txt:HFUZZ -w /root/wordlist/SecLists/Discovery/DNS/dns-Jhaddix.txt:FUZZ -fs 0 -v  | grep "| URL |" | awk '{print $4}' | sed 's/^http[s]:\/\///g' | sort -u | grep $domain | tee -a /root/recon/$domain/subdomain/ffuf.txt
-curl -s "https://api.hackertarget.com/hostsearch/?q=$domain" |  sed 's/,.*//' | sort -u | tee -a /root/recon/$domain/subdomain/hackertarget.txt
-curl -s "https://rapiddns.io/subdomain/$domain?full=1&down=1" | grep $domain | grep -Po '>\K[^<]*' | sed 's/\.$//' | tee -a /root/recon/$domain/subdomain/rapiddns.txt
-anubis -t $domain | grep $domain | tee -a /root/recon/$domain/subdomain/anubis.txt
-curl -s "https://subdomainfinder.c99.nl/scans/$(date +"%Y-%m-%d")/$domain" -A "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0)" | grep -Po '.*?//\K.*?(?=/)'  | awk -F "'" '{print $1}' | anew  | grep $domain | tee -a /root/recon/$domain/subdomain/c99_subdomainfinder.txt
+##shuffledns -d $domain -w $wordlist -r /root/wordlist/resolvers.txt -o /root/recon/$domain/subdomain/shuffledns.txt
+##ffuf -u http://HFUZZ -H "Host: FUZZ.HFUZZ" -w /root/recon/input.txt:HFUZZ -w /root/wordlist/SecLists/Discovery/DNS/dns-Jhaddix.txt:FUZZ -fs 0 -v  | grep "| URL |" | awk '{print $4}' | sed 's/^http[s]:\/\///g' | sort -u | grep $domain | tee -a /root/recon/$domain/subdomain/ffuf.txt
+#curl -s "https://api.hackertarget.com/hostsearch/?q=$domain" |  sed 's/,.*//' | sort -u | tee -a /root/recon/$domain/subdomain/hackertarget.txt
+#curl -s "https://rapiddns.io/subdomain/$domain?full=1&down=1" | grep $domain | grep -Po '>\K[^<]*' | sed 's/\.$//' | tee -a /root/recon/$domain/subdomain/rapiddns.txt
+#anubis -t $domain | grep $domain | tee -a /root/recon/$domain/subdomain/anubis.txt
+#curl -s "https://subdomainfinder.c99.nl/scans/$(date +"%Y-%m-%d")/$domain" -A "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0)" | grep -Po '.*?//\K.*?(?=/)'  | awk -F "'" '{print $1}' | anew  | grep $domain | tee -a /root/recon/$domain/subdomain/c99_subdomainfinder.txt
 cat /root/recon/$domain/subdomain/*.txt | sort --unique | grep $domain | sed 's/^*.//' | tee -a /root/recon/$domain/subdomain/all_sort_sub.txt
 
 done
@@ -114,7 +117,7 @@ rm /root/recon/$domain/subdomain/good/passive_resolving_live_sub_edit.txt
 done
 }
 resolving_domains
-
+<<COMMENT
 sub_brutforce(){
 for domain in $(cat $host);
 do
@@ -128,6 +131,8 @@ cat /root/recon/$domain/subdomain/good/final/http_domain_for_brut.txt | dnsgen -
 done
 }
 sub_brutforce
+COMMENT
+
 
 httpx_resolver(){
 for domain in $(cat $host);
