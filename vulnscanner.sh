@@ -152,7 +152,7 @@ gf cors /root/recon/$domain/url/valid_urls.txt |  tee /root/recon/$domain/gf/cor
 done
 }
 gf_patterns
-
+<<COMMENT
 SQL(){
 for domain in $(cat $host);
 do
@@ -164,7 +164,7 @@ python3 /root/HBSQLI/hbsqli.py -l /root/recon/$domain/url/valid_urls.txt -p /roo
 done
 }
 SQL
-
+COMMENT
 
 Refactors_xss(){
 for domain in $(cat $host);
