@@ -133,9 +133,9 @@ do
 cat /root/recon/$domain/subdomain/good/final/http_domain_for_brut.txt | dnsgen - | puredns resolve --resolvers /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/dnsgen_purdns_sub.txt
 done
 }
-COMMENT
-sub_brutforce
 
+sub_brutforce
+COMMENT
 
 
 httpx_resolver(){
