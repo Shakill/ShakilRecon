@@ -161,7 +161,7 @@ sub_brutforce_2(){
 for domain in $(cat $host);
 do
 puredns bruteforce /root/wordlist/my_wordlist.txt -d /root/recon/$domain/subdomain/good/final/best/sub_brutforce_2_file.txt -r /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/best/puredns_sub_by_my_wordlist.txt
-cat /root/recon/$domain/subdomain/good/final/best/sub_brutforche_2_file.txt | dnsgen - | puredns resolve --resolvers /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/best/dnsgen_puredns_sub_2.txt
+cat /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt | dnsgen - | puredns resolve --resolvers /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/best/dnsgen_puredns_sub_2.txt
 done
 }
 sub_brutforce_2
