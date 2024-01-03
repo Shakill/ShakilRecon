@@ -93,11 +93,19 @@ done
 }
 httpx_resolver
 
+wordlist_Making(){
+for domain in $(cat $host);
+do
+cat /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt | tok | anew | tee -a  /root/wordlist/my_wordlist.txt
+done
+}
+wordlist_Making
+
 sub_brutforce(){
 for domain in $(cat $host);
 do
-
-cat /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt | dnsgen - | puredns resolve --resolvers /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/best/dnsgen_puredns_sub_2.txt
+puredns bruteforce /root/wordlist/my_wordlist.txt -d /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt -r /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/best/puredns_sub_by_my_wordlist.txt
+cat /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt | dnsgen - | puredns resolve --resolvers /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/best/dnsgen_puredns_sub.txt
 done
 }
 sub_brutforce
@@ -201,19 +209,11 @@ cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | waybacku
 cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | hakrawler | tee -a /root/recon/$domain/url/hakrawler-urls.txt
 gospider -S /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -c 10 -d 1 --other-source | grep -o 'https\?://[^ ]\+' > /root/recon/$domain/url/gospider-url.txt
 cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | katana -o /root/recon/$domain/url/katana.txt
-#cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | xargs -n 1 -I {} python3 /root/OK-VPS/tools/ParamSpider/paramspider.py --domain {} --level high  | grep -o 'https\?://[^ ]\+' > /root/recon/$domain/url/all_spiderparamters.txt
-
 #waymore
 python3 /root/waymore/waymore.py -i $domain -mode U | sort -u | tee -a /root/recon/$domain/url/waymore.txt
 #xnLinkFinder
 python3 /root/xnLinkFinder/xnLinkFinder.py -i $domain -sf $domain -d 2 -v | sed -e 's_https*://__' | sed -e 's_www.__' | grep $domain | sort --unique | httpx | tee -a /root/recon/$domain/url/xlinkfinder.txt
 #cat /root/recon/$domain/subdomain/good/final/active_subdomain.txt  | xargs -n 1 -I {} python3 /root/OK-VPS/tools/ParamSpider/paramspider.py --domain {} --level high  | grep -o 'https\?://[^ ]\+' > /root/recon/$domain/url/all_spiderparamters.txt
-#paramspider -l /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt -s
-#cat /root/OK-VPS/tools/paramspider/results/*.txt > /root/OK-VPS/tools/paramspider/results/ParamSpider_all.txt && cp -r /root/OK-VPS/tools/paramspider/results/ParamSpider_all.txt /root/recon/$domain/url 
-#mv /root/recon/output.txt /root/recon/$domain/url/output.txt
-#cat /root/recon/results/*.txt > /root/recon/$domain/url/params.txt
-#cp /root/recon/web_archive_urls.sh /root/recon/$domain/url/
-#cd /root/recon/$domain/url && ./web_archive_urls.sh /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt
 curl -s "https://otx.alienvault.com/api/v1/indicators/domain/$domain/url_list?limit=100&page=1" | grep -o '"url": *"[^"]*"' | grep -o '"[^"]*"$' | tr -d '"' | tee -a /root/recon/$domain/url/alienvault.txt
 cat /root/recon/$domain/url/*.txt | sort --unique | grep $domain | tee /root/recon/$domain/url/sort-url.txt
 httpx -l /root/recon/$domain/url/sort-url.txt -o /root/recon/$domain/url/url_httpx.txt
