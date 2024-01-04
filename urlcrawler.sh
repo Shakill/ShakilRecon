@@ -5,6 +5,10 @@ wordlist="/root/wordlist/SecLists/Discovery/DNS/dns-Jhaddix.txt"
 resolver="/root/wordlist/resolvers.txt"
 
 cat <<"EOF"
+
+
+
+
 ==================================================================================================
 
    __  __    ____     __    ______    ____     ___  _       __    __     ______    ____ 
