@@ -122,7 +122,7 @@ cat /root/recon/$domain/subdomain/good/final/best/*.txt | sort --unique | httpx 
 cat /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion_httpx.txt | sed -e 's_https*://__' | sed -e 's_www.__'| sort --unique | tee -a /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt
 subfinder -all -dL /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt -o /root/recon/$domain/subdomain/good/final/best/subfinder_recursive.txt
 #amass enum -df /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt -config /root/config.yaml | awk '{print $1}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/good/final/best/amass_recursive.txt
-amass enum -passive -norecursive -noalts -df /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt -o /root/recon/$domain/subdomain/good/final/best/amass_recursive.txt
+#amass enum -passive -norecursive -noalts -df /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt -o /root/recon/$domain/subdomain/good/final/best/amass_recursive.txt
 done
 }
 recursive
@@ -213,7 +213,7 @@ cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  |  gauplus
 cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | waybackurls | tee /root/recon/$domain/url/waybackurls.txt
 cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | hakrawler | tee -a /root/recon/$domain/url/hakrawler-urls.txt
 gospider -S /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -c 10 -d 1 --other-source | grep -o 'https\?://[^ ]\+' > /root/recon/$domain/url/gospider-url.txt
-cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | katana -o /root/recon/$domain/url/katana.txt
+#cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | katana -o /root/recon/$domain/url/katana.txt
 #waymore
 python3 /root/waymore/waymore.py -i $domain -mode U | sort -u | tee -a /root/recon/$domain/url/waymore.txt
 #xnLinkFinder
