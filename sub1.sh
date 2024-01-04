@@ -205,7 +205,7 @@ cf-check -d /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | 
 done
 }
 CloudFlare_Checker
-
+<<COMMENT
 find_urls(){
 for domain in $(cat $host);
 do
@@ -231,3 +231,4 @@ cat /root/recon/$domain/url/final-url.txt | egrep -v "\.woff|\.ttf|\.svg|\.eot|\
 done
 }
 find_urls
+COMMENT
