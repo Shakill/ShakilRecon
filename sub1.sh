@@ -79,9 +79,10 @@ domain_enum
 wordlist_Making(){
 for domain in $(cat $host);
 do
-cat /root/recon/$domain/subdomain/all_sort_sub.txt | sed -e 's_https*://__' | sed -e 's_www.__' | tee -a /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt
-#rm /root/recon/$domain/subdomain/all_sort_sub.txt 
-cat /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt | analyticsrelationships | awk '{print $2}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/good/final/best/analyticsrelationships_sub.txt
+mv /root/recon/$domain/subdomain/all_sort_sub.txt /root/recon/$domain/subdomain/good/copy_all_sort_sub.txt
+cat /root/recon/$domain/subdomain/good/copy_all_sort_sub.txt | analyticsrelationships | awk '{print $2}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/good/final/best/analyticsrelationships_sub.txt
+cat /root/recon/$domain/subdomain/good/*.txt | sed -e 's_https*://__' | sed -e 's_www.__' | tee -a /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt
+
 cat /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt | tok | anew | tee -a  /root/wordlist/$domain_my_wordlist.txt
 done
 }
