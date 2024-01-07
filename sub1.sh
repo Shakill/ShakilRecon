@@ -60,7 +60,7 @@ mkdir -p /root/recon/$domain/subdomain /root/recon/$domain/subdomain/good /root/
 
 subfinder -all -d $domain -o /root/recon/$domain/subdomain/subfinder.txt
 cat /root/domains_cloud/*.txt | grep $domain | grep -oP "(?<=\[).*(?=\])" | tr ' ' '\n' | sed 's/^*.//' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/domains_cloud.txt
-github-subdomains -t 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 -d $domain -o /root/recon/$domain/subdomain/github_sub.txt
+github-subdomains -t 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  -d $domain -o /root/recon/$domain/subdomain/github_sub.txt
 #Install v3.23.3 amass
 amass enum -passive -norecursive -noalts -d $domain -o /root/recon/$domain/subdomain/amass_sub_passive.txt
 curl -s "https://www.google.com/search?q=site%3A$domain" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///' | sort -u | tee -a /root/recon/$domain/subdomain/google_sub.txt 
@@ -74,34 +74,15 @@ done
 }
 domain_enum
 
-resolving_domains(){
-for domain in $(cat $host);
-do
 
-httpx -l /root/recon/$domain/subdomain/all_sort_sub.txt -threads 50 -o /root/recon/$domain/subdomain/good/passive_resolving_live_sub_edit.txt
-cat /root/recon/$domain/subdomain/good/passive_resolving_live_sub_edit.txt | sed -e 's_https*://__' | sed -e 's_www.__' | sort -u | tee -a /root/recon/$domain/subdomain/good/final/http_domain_for_brut.txt
-rm /root/recon/$domain/subdomain/good/passive_resolving_live_sub_edit.txt
-done
-}
-resolving_domains
-
-
-httpx_resolver(){
-for domain in $(cat $host);
-do
-cat /root/recon/$domain/subdomain/good/final/http_domain_for_brut.txt | analyticsrelationships | awk '{print $2}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/good/final/analyticsrelationships_sub.txt
-cat /root/recon/$domain/subdomain/good/final/*.txt | httpx | sort --unique | tee -a /root/recon/$domain/subdomain/good/final/best/king_httpx_sub.txt
-cat /root/recon/$domain/subdomain/good/final/best/king_httpx_sub.txt | sed -e 's_https*://__' | sed -e 's_www.__'| sort --unique | tee -a /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt 
-#......................................................................
-rm /root/recon/$domain/subdomain/good/final/*.txt
-done
-}
-httpx_resolver
 
 wordlist_Making(){
 for domain in $(cat $host);
 do
-cat /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt | tok | anew | tee -a  /root/wordlist/my_wordlist.txt
+cat /root/recon/$domain/subdomain/all_sort_sub.txt | sed -e 's_https*://__' | sed -e 's_www.__' | tee -a /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt
+#rm /root/recon/$domain/subdomain/all_sort_sub.txt 
+cat /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt | analyticsrelationships | awk '{print $2}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/good/final/best/analyticsrelationships_sub.txt
+cat /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt | tok | anew | tee -a  /root/wordlist/$domain_my_wordlist.txt
 done
 }
 wordlist_Making
@@ -109,7 +90,7 @@ wordlist_Making
 sub_brutforce(){
 for domain in $(cat $host);
 do
-puredns bruteforce /root/wordlist/my_wordlist.txt -d /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt -r /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/best/puredns_sub_by_my_wordlist.txt
+puredns bruteforce /root/wordlist/$domain_my_wordlist.txt -d /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt -r /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/best/puredns_sub_by_my_wordlist.txt
 cat /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt | dnsgen - | puredns resolve --resolvers /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/best/dnsgen_puredns_sub.txt
 done
 }
@@ -122,14 +103,14 @@ cat /root/recon/$domain/subdomain/good/final/best/*.txt | sort --unique | httpx 
 cat /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion_httpx.txt | sed -e 's_https*://__' | sed -e 's_www.__'| sort --unique | tee -a /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt
 subfinder -all -dL /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt -o /root/recon/$domain/subdomain/good/final/best/subfinder_recursive.txt
 #amass enum -df /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt -config /root/config.yaml | awk '{print $1}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/good/final/best/amass_recursive.txt
-#amass enum -passive -norecursive -noalts -df /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt -o /root/recon/$domain/subdomain/good/final/best/amass_recursive.txt
+amass enum -passive -norecursive -noalts -df /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt -o /root/recon/$domain/subdomain/good/final/best/amass_recursive.txt
 done
 }
 recursive
 
 
 
-httpx_resolve_2(){
+httpx_resolve(){
 for domain in $(cat $host);
 do
 cat /root/recon/$domain/subdomain/good/final/best/*.txt | sort --unique | grep $domain | httpx | sort --unique | tee -a /root/recon/$domain/subdomain/good/final/all_active_sub.txt
@@ -140,7 +121,7 @@ rm /root/recon/$domain/subdomain/good/final/all_active_sub.txt
 #...................................................
 done
 }
-httpx_resolve_2
+httpx_resolve
 
 
 interesting_subs(){
@@ -205,30 +186,4 @@ cf-check -d /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | 
 done
 }
 CloudFlare_Checker
-<<COMMENT
-find_urls(){
-for domain in $(cat $host);
-do
-cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  |  gauplus -t 30 | tee -a /root/recon/$domain/url/gaplus-urls.txt
-cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | waybackurls | tee /root/recon/$domain/url/waybackurls.txt
-cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | hakrawler | tee -a /root/recon/$domain/url/hakrawler-urls.txt
-gospider -S /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -c 10 -d 1 --other-source | grep -o 'https\?://[^ ]\+' > /root/recon/$domain/url/gospider-url.txt
-#cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | katana -o /root/recon/$domain/url/katana.txt
-#waymore
-python3 /root/waymore/waymore.py -i $domain -mode U | sort -u 
-mv /root/waymore/results/$domain/waymore.txt  /root/recon/$domain/url/waymore.txt
-#xnLinkFinder
-python3 /root/xnLinkFinder/xnLinkFinder.py -i $domain -sf $domain -d 2 -v | sed -e 's_https*://__' | sed -e 's_www.__' | grep $domain | sort --unique | httpx | tee -a /root/recon/$domain/url/xlinkfinder.txt
-#cat /root/recon/$domain/subdomain/good/final/active_subdomain.txt  | xargs -n 1 -I {} python3 /root/OK-VPS/tools/ParamSpider/paramspider.py --domain {} --level high  | grep -o 'https\?://[^ ]\+' > /root/recon/$domain/url/all_spiderparamters.txt
-curl -s "https://otx.alienvault.com/api/v1/indicators/domain/$domain/url_list?limit=100&page=1" | grep -o '"url": *"[^"]*"' | grep -o '"[^"]*"$' | tr -d '"' | tee -a /root/recon/$domain/url/alienvault.txt
-cat /root/recon/$domain/url/*.txt | sort --unique | grep $domain | tee /root/recon/$domain/url/sort-url.txt
-httpx -l /root/recon/$domain/url/sort-url.txt -o /root/recon/$domain/url/url_httpx.txt
-arjun -i /root/recon/$domain/url/url_httpx.txt -t 20 -oT /root/recon/$domain/url/arjun.txt
-cat /root/recon/$domain/url/*.txt | tee -a /root/recon/$domain/url/2all-url.txt
-cat /root/recon/$domain/url/2all-url.txt | httpx | sort --unique | tee /root/recon/$domain/url/final-url.txt
-cat /root/recon/$domain/url/final-url.txt | egrep -v "\.woff|\.ttf|\.svg|\.eot|\.png|\.jpep|\.svg|\.css|\.ico" | sed 's/:88//9;s/:443//g'| grep $domain | sort -u | tee -a /root/recon/$domain/url/valid_urls.txt
 
-done
-}
-find_urls
-COMMENT
