@@ -65,10 +65,10 @@ python3 /root/xnLinkFinder/xnLinkFinder.py -i $domain -sf $domain -d 2 -v | sed 
 curl -s "https://otx.alienvault.com/api/v1/indicators/domain/$domain/url_list?limit=100&page=1" | grep -o '"url": *"[^"]*"' | grep -o '"[^"]*"$' | tr -d '"' | tee -a /root/recon/$domain/url/alienvault.txt
 cat /root/recon/$domain/url/*.txt | sort --unique | grep $domain | tee /root/recon/$domain/url/sort-url.txt
 httpx -l /root/recon/$domain/url/sort-url.txt -o /root/recon/$domain/url/url_httpx.txt
-arjun -i /root/recon/$domain/url/url_httpx.txt -t 20 -oT /root/recon/$domain/url/arjun.txt
-cat /root/recon/$domain/url/*.txt | tee -a /root/recon/$domain/url/2all-url.txt
-cat /root/recon/$domain/url/2all-url.txt | httpx | sort --unique | tee /root/recon/$domain/url/final-url.txt
-cat /root/recon/$domain/url/final-url.txt | egrep -v "\.woff|\.ttf|\.svg|\.eot|\.png|\.jpep|\.svg|\.css|\.ico" | sed 's/:88//9;s/:443//g'| grep $domain | sort -u | tee -a /root/recon/$domain/url/valid_urls.txt
+#arjun -i /root/recon/$domain/url/url_httpx.txt -t 20 -oT /root/recon/$domain/url/arjun.txt
+#cat /root/recon/$domain/url/*.txt | tee -a /root/recon/$domain/url/2all-url.txt
+#cat /root/recon/$domain/url/2all-url.txt | httpx | sort --unique | tee /root/recon/$domain/url/final-url.txt
+cat /root/recon/$domain/url/url_httpx.txt | egrep -v "\.woff|\.ttf|\.svg|\.eot|\.png|\.jpep|\.svg|\.css|\.ico" | sed 's/:88//9;s/:443//g'| grep $domain | sort -u | tee -a /root/recon/$domain/url/valid_urls.txt
 echo " Url Crawling is completed Successfully. Thank you for crawling"
 done
 }
