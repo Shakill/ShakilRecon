@@ -60,7 +60,7 @@ mkdir -p /root/recon/$domain/subdomain /root/recon/$domain/subdomain/good /root/
 
 subfinder -all -d $domain -o /root/recon/$domain/subdomain/subfinder.txt
 cat /root/domains_cloud/*.txt | grep $domain | grep -oP "(?<=\[).*(?=\])" | tr ' ' '\n' | sed 's/^*.//' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/domains_cloud.txt
-github-subdomains -t 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  -d $domain -o /root/recon/$domain/subdomain/github_sub.txt
+#github-subdomains -t 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  -d $domain -o /root/recon/$domain/subdomain/github_sub.txt
 #Install v3.23.3 amass
 amass enum -passive -norecursive -noalts -d $domain -o /root/recon/$domain/subdomain/amass_sub_passive.txt
 curl -s "https://www.google.com/search?q=site%3A$domain" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///' | sort -u | tee -a /root/recon/$domain/subdomain/google_sub.txt 
