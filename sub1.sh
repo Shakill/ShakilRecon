@@ -83,7 +83,7 @@ mv /root/recon/$domain/subdomain/all_sort_sub.txt /root/recon/$domain/subdomain/
 cat /root/recon/$domain/subdomain/good/copy_all_sort_sub.txt | analyticsrelationships | awk '{print $2}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/good/final/best/analyticsrelationships_sub.txt
 cat /root/recon/$domain/subdomain/good/*.txt | sed -e 's_https*://__' | sed -e 's_www.__' | tee -a /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt
 
-cat /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt | tok | anew | tee -a  /root/wordlist/$domain_my_wordlist.txt
+cat /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt | tok | anew | tee -a  /root/recon/$domain/subdomain/good/final/my_wordlist.txt
 done
 }
 wordlist_Making
@@ -91,7 +91,7 @@ wordlist_Making
 sub_brutforce(){
 for domain in $(cat $host);
 do
-puredns bruteforce /root/wordlist/$domain_my_wordlist.txt -d /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt -r /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/best/puredns_sub_by_my_wordlist.txt
+puredns bruteforce //root/recon/$domain/subdomain/good/final/my_wordlist.txt -d /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt -r /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/best/puredns_sub_by_my_wordlist.txt
 #cat /root/recon/$domain/subdomain/good/final/best/sub_brutforce_file.txt | dnsgen - | puredns resolve --resolvers /root/wordlist/resolvers.txt | tee -a /root/recon/$domain/subdomain/good/final/best/dnsgen_puredns_sub.txt
 done
 }
