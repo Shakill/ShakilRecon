@@ -51,9 +51,9 @@ find_urls(){
 for domain in $(cat $host);
 do
 
-cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  |  gau -t 30 | tee -a /root/recon/$domain/url/gaplus-urls.txt
-cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | waybackurls | tee /root/recon/$domain/url/waybackurls.txt
-cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | hakrawler | tee -a /root/recon/$domain/url/hakrawler-urls.txt
+cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  |  gau -t 30 | grep $domain | tee -a /root/recon/$domain/url/gaplus-urls.txt
+cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | waybackurls | grep $domain | tee /root/recon/$domain/url/waybackurls.txt
+cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | hakrawler | grep $domain | tee -a /root/recon/$domain/url/hakrawler-urls.txt
 gospider -S /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -c 10 -d 1 --other-source | grep -o 'https\?://[^ ]\+' > /root/recon/$domain/url/gospider-url.txt
 #cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | katana -o /root/recon/$domain/url/katana.txt
 #waymore
