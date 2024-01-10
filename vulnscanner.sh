@@ -98,24 +98,4 @@ done
 find_urls
 COMMENT
 
-Url_endpoints(){
-for domain in $(cat $host);
-do
-cat /root/recon/$domain/url/valid_urls.txt | cut -d "/" -f4- >> /root/recon/$domain/url/endpoint/urlcutting_endpoints.txt
-echo $domain | gau | wordlistgen | sort -u | tee -a /root/recon/$domain/url/endpoint/gau_wordlistgen.txt
-mv /root/recon/parameters.txt /root/recon/$domain/url/endpoint/xnlinkfinder.txt
-mv /root/recon/output.txt /root/recon/$domain/url/endpoint/endpoint_xnlinkfinder.txt
-cat /root/recon/$domain/url/endpoint/*.txt | sort -u | tee -a /root/recon/$domain/url/endpoint/url_endpoints.txt
-
-#............................
-mv /root/recon/$domain/url/valid_urls.txt /root/recon/$domain/url/endpoint/valid_urls.txt
-rm /root/recon/$domain/url/*.txt
-mv /root/recon/$domain/url/endpoint/valid_urls.txt /root/recon/$domain/url/valid_urls.txt
-mv /root/recon/$domain/url/endpoint/url_endpoints.txt /root/recon/$domain/url/url_endpoints.txt
-rm /root/recon/$domain/url/endpoint/*.txt
-#.....................
-done
-}
-Url_endpoints
-
 
