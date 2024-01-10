@@ -69,7 +69,20 @@ httpx -l /root/recon/$domain/url/sort-url.txt -o /root/recon/$domain/url/url_htt
 #cat /root/recon/$domain/url/*.txt | tee -a /root/recon/$domain/url/2all-url.txt
 #cat /root/recon/$domain/url/2all-url.txt | httpx | sort --unique | tee /root/recon/$domain/url/final-url.txt
 cat /root/recon/$domain/url/url_httpx.txt | egrep -v "\.woff|\.ttf|\.svg|\.eot|\.png|\.jpep|\.svg|\.css|\.ico" | sed 's/:88//9;s/:443//g'| grep $domain | sort -u | tee -a /root/recon/$domain/url/valid_urls.txt
-echo " Url Crawling is completed Successfully. Thank you for crawling"
+
+cat <<"EOF"
+========================================================================
+  ______    __                      __         __  __               
+ /_  __/   / /_   ____ _   ____    / /__       \ \/ /  ____   __  __
+  / /     / __ \ / __ `/  / __ \  / //_/        \  /  / __ \ / / / /
+ / /     / / / // /_/ /  / / / / / ,<           / /  / /_/ // /_/ / 
+/_/     /_/ /_/ \__,_/  /_/ /_/ /_/|_|         /_/   \____/ \__,_/  
+                                                                    
+            Url Crawling is completed Successfully. 
+                    Thank you for crawling
+
+========================================================================
+EOF
 done
 }
 find_urls
