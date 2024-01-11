@@ -60,7 +60,7 @@ gospider -S /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -c
 python3 /root/waymore/waymore.py -i $domain -mode U
 mv /root/waymore/results/$domain/waymore.txt  /root/recon/$domain/url/waymore.txt
 #xnLinkFinder
-python3 /root/xnLinkFinder/xnLinkFinder.py -i $domain -sf $domain -d 2 -v | sed -e 's_https*://__' | sed -e 's_www.__' | grep $domain | sort --unique | httpx | tee -a /root/recon/$domain/url/xlinkfinder.txt
+python3 /root/xnLinkFinder/xnLinkFinder.py -i $domain -sf $domain -d 2 -v | sed -e 's_https*://__' | sed -e 's_www.__' | grep $domain | sort --unique | tee -a /root/recon/$domain/url/xlinkfinder.txt
 #cat /root/recon/$domain/subdomain/good/final/active_subdomain.txt  | xargs -n 1 -I {} python3 /root/OK-VPS/tools/ParamSpider/paramspider.py --domain {} --level high  | grep -o 'https\?://[^ ]\+' > /root/recon/$domain/url/all_spiderparamters.txt
 curl -s "https://otx.alienvault.com/api/v1/indicators/domain/$domain/url_list?limit=100&page=1" | grep -o '"url": *"[^"]*"' | grep -o '"[^"]*"$' | tr -d '"' | tee -a /root/recon/$domain/url/alienvault.txt
 cat /root/recon/$domain/url/*.txt | sort --unique | grep $domain | tee /root/recon/$domain/url/sort-url.txt
