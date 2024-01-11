@@ -57,7 +57,7 @@ cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | hakrawle
 gospider -S /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -c 10 -d 1 --other-source | grep -o 'https\?://[^ ]\+' > /root/recon/$domain/url/gospider-url.txt
 #cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | katana -o /root/recon/$domain/url/katana.txt
 #waymore
-python3 /root/waymore/waymore.py -i $domain -mode U | sort -u 
+python3 /root/waymore/waymore.py -i $domain -mode U
 mv /root/waymore/results/$domain/waymore.txt  /root/recon/$domain/url/waymore.txt
 #xnLinkFinder
 python3 /root/xnLinkFinder/xnLinkFinder.py -i $domain -sf $domain -d 2 -v | sed -e 's_https*://__' | sed -e 's_www.__' | grep $domain | sort --unique | httpx | tee -a /root/recon/$domain/url/xlinkfinder.txt
