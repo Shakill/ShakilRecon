@@ -56,6 +56,9 @@ cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | waybacku
 cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | hakrawler | grep $domain | tee -a /root/recon/$domain/url/hakrawler-urls.txt
 gospider -S /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -c 10 -d 1 --other-source | grep -o 'https\?://[^ ]\+' > /root/recon/$domain/url/gospider-url.txt
 #cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | katana -o /root/recon/$domain/url/katana.txt
+
+paramspider -l /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt -s
+cat /root/recon/results/*.txt > /root/recon/$domain/url/paramspider.txt
 #waymore
 python3 /root/waymore/waymore.py -i $domain -mode U
 mv /root/waymore/results/$domain/waymore.txt  /root/recon/$domain/url/waymore.txt
