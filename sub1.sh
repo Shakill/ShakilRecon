@@ -117,7 +117,7 @@ recursive
 httpx_resolve(){
 for domain in $(cat $host);
 do
-cat /root/recon/$domain/subdomain/good/final/best/*.txt| httpx| grep $domain | tee -a /root/recon/$domain/subdomain/good/final/active_sub.txt
+cat /root/recon/$domain/subdomain/good/final/best/*.txt| httpx | grep $domain | tee -a /root/recon/$domain/subdomain/good/final/active_sub.txt
 cat /root/recon/$domain/subdomain/good/final/active_sub.txt | sort --unique | tee -a /root/recon/$domain/subdomain/good/final/all_active_sub.txt
 #...........................................
 rm /root/recon/$domain/subdomain/good/final/best/*.txt
