@@ -135,7 +135,7 @@ gf interestingsubs /root/recon/$domain/subdomain/good/final/best/all_active_sub.
 done
 }
 interesting_subs
-
+<<COMMENT
 nrich_cve(){
 for domain in $(cat $host);
 do
@@ -143,7 +143,7 @@ cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | dnsx -a 
 done
 }
 nrich_cve 
-
+COMMENT
 Subdomain_takeover(){
 for domain in $(cat $host);
 do
