@@ -103,7 +103,7 @@ for domain in $(cat $host);
 do
 mv /root/recon/$domain/subdomain/all_sort_sub.txt /root/recon/$domain/subdomain/good/final/best/copy_all_sort_sub.txt
 cat /root/recon/$domain/subdomain/good/final/best/copy_all_sort_sub.txt | analyticsrelationships | awk '{print $2}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/good/final/best/analyticsrelationships_sub.txt
-cat /root/recon/$domain/subdomain/good/final/best/*.txt | httpx | sort --unique | tee -a /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion_httpx.txt
+cat /root/recon/$domain/subdomain/good/final/best/*.txt | sort --unique | tee -a /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion_httpx.txt
 cat /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion_httpx.txt | sed -e 's_https*://__' | sed -e 's_www.__'| sort --unique | tee -a /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt
 subfinder -all -dL /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt -o /root/recon/$domain/subdomain/good/final/best/subfinder_recursive.txt
 #amass enum -df /root/recon/$domain/subdomain/good/final/best/subdomain_for_recursion.txt -config /root/config.yaml | awk '{print $1}' | grep $domain | sort -u | tee -a /root/recon/$domain/subdomain/good/final/best/amass_recursive.txt
@@ -117,7 +117,8 @@ recursive
 httpx_resolve(){
 for domain in $(cat $host);
 do
-cat /root/recon/$domain/subdomain/good/final/best/*.txt | sort --unique | grep $domain | httpx | sort --unique | tee -a /root/recon/$domain/subdomain/good/final/all_active_sub.txt
+cat /root/recon/$domain/subdomain/good/final/best/*.txt| httpx| grep $domain | tee -a /root/recon/$domain/subdomain/good/final/active_sub.txt
+cat /root/recon/$domain/subdomain/good/final/active_sub.txt | sort --unique | tee -a /root/recon/$domain/subdomain/good/final/all_active_sub.txt
 #...........................................
 rm /root/recon/$domain/subdomain/good/final/best/*.txt
 mv /root/recon/$domain/subdomain/good/final/all_active_sub.txt /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt
