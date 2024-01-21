@@ -51,7 +51,7 @@ find_urls(){
 for domain in $(cat $host);
 do
 mkdir -p /root/recon/$domain/subdomain /root/recon/$domain/subdomain/good /root/recon/$domain/subdomain/good/final /root/recon/$domain/subdomain/good/final/best /root/recon/$domain/Subdomain-Takeover /root/recon/$domain/Subdomain-Screenshots /root/recon/$domain/Special_subdomain /root/recon/$domain/Special_subdomain/scan /root/recon/$domain/scan  /root/recon/$domain/scan/my-jaeles /root/recon/$domain/scan/jaeles /root/recon/$domain/scan/jaeles/my-url /root/recon/$domain/scan/jaeles/url /root/recon/$domain/dri  /root/recon/$domain/scan/nuclei/Php-My-Admin /root/recon/$domain/scan/nuclei /root/recon/$domain/scan/new-nuclei /root/recon/$domain/url /root/recon/$domain/url/endpoint /root/recon/$domain/Secret-api /root/recon/$domain/gf /root/recon/$domain/xss /root/recon/$domain/sql /root/recon/$domain/js_url /root/recon/$domain/git_dork /root/recon/$domain/SQL
-cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  |  gau -t 30 | grep $domain | tee -a /root/recon/$domain/url/gaplus-urls.txt
+cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  |  gau | grep $domain | tee -a /root/recon/$domain/url/gaplus-urls.txt
 cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | waybackurls | grep $domain | tee /root/recon/$domain/url/waybackurls.txt
 cat /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  | hakrawler | grep $domain | tee -a /root/recon/$domain/url/hakrawler-urls.txt
 gospider -S /root/recon/$domain/subdomain/good/final/best/all_active_sub.txt  -c 10 -d 1 --other-source | grep -o 'https\?://[^ ]\+' > /root/recon/$domain/url/gospider-url.txt
