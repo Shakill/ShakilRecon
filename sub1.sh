@@ -68,7 +68,7 @@ curl -s "https://crt.sh/?q=%25.$domain&output=json" | jq -r '.[].name_value' | s
 curl -s "https://www.bing.com/search?q=site%3A$domain" -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36" | grep -Eo "(http|https)://[a-zA-Z0-9._-]+\.$domain" | sed 's/.*\/\///' | sort -u | tee -a /root/recon/$domain/subdomain/bing_sub.txt 
 curl --insecure --silent "http://web.archive.org/cdx/search/cdx?url=*.$domain/*&output=text&fl=original&collapse=urlkey" | sed -e 's_https*://__' -e "s/\/.*//" -e 's/:.*//' -e 's/^www\.//' | sed "/@/d" | sed -e 's/\.$//' | sort -u | tee /root/recon/$domain/subdomain/web.archive.txt
 curl -s "https://rapiddns.io/subdomain/$domain?full=1&down=1" | grep $domain | grep -Po '>\K[^<]*' | sed 's/\.$//' | tee -a /root/recon/$domain/subdomain/rapiddns.txt
-
+cero $domain | sed 's/^*.//' | grep -e "\." | sort -u | tee -a /root/recon/$domain/subdomain/cero_ssl_sub.txt
 cat /root/recon/$domain/subdomain/*.txt | sort --unique | grep $domain | sed 's/^*.//' | tee -a /root/recon/$domain/subdomain/all_sort_sub.txt
 
 done
